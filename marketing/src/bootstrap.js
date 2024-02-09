@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createMemoryHistory } from 'history';
+import { createMemoryHistory, createBrowserHistory } from 'history';
 import App from './App';
 
 // Mount function to start the app
-const mount = (el, { onNavigate }) => {
-  const history = createMemoryHistory();
+const mount = (el, { onNavigate, defaultHistory }) => {
+  // if running in isolation use browerHistory, if running as a mf use MemoryHistory
+  const history = defaultHistory || createMemoryHistory();
 
   // everytime there is a route change run onNavigate (only exists if running wth Container)
   if (onNavigate) {
@@ -31,7 +32,7 @@ if (process.env.NODE_ENV === 'development') {
   const el = document.querySelector('#marketing-dev-root');
   if (el) {
     // We are probably running in isolation
-    mount(el, {});
+    mount(el, { defaultHistory: createBrowserHistory() });
   }
 }
 
