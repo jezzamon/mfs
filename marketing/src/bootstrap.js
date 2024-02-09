@@ -7,8 +7,10 @@ import App from './App';
 const mount = (el, { onNavigate }) => {
   const history = createMemoryHistory();
 
-  // everytime there is a route change run onNavigate
-  history.listen(onNavigate);
+  // everytime there is a route change run onNavigate (only exists if running wth Container)
+  if (onNavigate) {
+    history.listen(onNavigate);
+  }
 
   ReactDOM.render(<App history={history} />, el);
 };
@@ -18,7 +20,7 @@ if (process.env.NODE_ENV === 'development') {
   const el = document.querySelector('#marketing-dev-root');
   if (el) {
     // We are probably running in isolation
-    mount(el);
+    mount(el, {});
   }
 }
 
